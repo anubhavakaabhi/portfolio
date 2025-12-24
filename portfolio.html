@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Anubhav Singh | Video Editor & Thumbnail Designer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    /* ---------- Global ---------- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, sans-serif;
+      background: radial-gradient(circle at top, #2a1b63 0, #050814 55%, #02030a 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* ---------- Utility ---------- */
+    .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+    .btn {
+      display: inline-block;
+      padding: 0.85rem 2.3rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #ff4b9b, #ff9f43);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow: 0 0 16px rgba(255, 75, 155, 0.6);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.18s ease-out, box-shadow 0.18s ease-out;
+    }
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -80%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.65),
+        transparent
+      );
+      transform: skewX(-20deg);
+      transition: left 0.55s ease;
+    }
+    .btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 0 24px rgba(255, 75, 155, 0.9);
+    }
+    .btn:hover::before { left: 140%; }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #ffffff;
+      box-shadow: none;
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 16px rgba(255, 255, 255, 0.5);
+    }
+
+    /* ---------- Header / Nav ---------- */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: linear-gradient(
+        to bottom,
+        rgba(1, 3, 15, 0.98),
+        rgba(1, 3, 15, 0.8),
+        transparent
+      );
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+    }
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .logo span { color: #ff6fb5; }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+    }
+    .nav-links a {
+      position: relative;
+      padding-bottom: 0.25rem;
+      cursor: pointer;
+    }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #ff4b9b, #58d5ff);
+      transition: width 0.25s ease-out;
+    }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { width: 100%; }
+
+    /* ---------- Hero ---------- */
+   .hero {
+  padding: 4rem 0 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.hero-inner {
+  display: flex;
+  justify-content: center;
+}
+.hero-centered h1 {
+  font-size: clamp(2.3rem, 3vw + 1.6rem, 3.2rem);
+  line-height: 1.15;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.hero-centered h1 span {
+  color: #ff6fb5;
+}
+.hero-centered h2 {
+  font-size: 1rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #a4b1ff;
+  margin-bottom: 1.4rem;
+}
+.hero-centered p {
+  font-size: 1rem;
+  max-width: 640px;
+  margin: 0 auto 2.2rem;
+  color: #d8dbff;
+  line-height: 1.7;
+}
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.7rem;
+}
+.hero-meta {
+  margin-top: 0.7rem;
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  font-size: 0.83rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #a3a7d3;
+}
+.hero-meta span strong {
+  display: block;
+  font-size: 1.05rem;
+  color: #ffffff;
+}
+
+    .hero-visual {
+      position: relative;
+      padding: 1.2rem;
+      border-radius: 32px;
+      background: radial-gradient(circle at top left, #6123ff, transparent 55%),
+        radial-gradient(circle at bottom right, #ff4b9b, transparent 55%),
+        rgba(6, 8, 28, 0.9);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background-image: radial-gradient(
+          circle at 10% 10%,
+          rgba(255, 255, 255, 0.08),
+          transparent 60%
+        ),
+        radial-gradient(
+          circle at 90% 90%,
+          rgba(255, 255, 255, 0.04),
+          transparent 60%
+        );
+      opacity: 0.8;
+      mix-blend-mode: screen;
+      animation: floatGlow 12s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    .hero-visual-main {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .hero-visual-main img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transform: scale(1.02);
+      transform-origin: center;
+      animation: slowZoom 18s ease-in-out infinite alternate;
+    }
+    .hero-screens {
+      position: absolute;
+      left: -8%;
+      bottom: -12%;
+      display: flex;
+      gap: 0.8rem;
+      transform: scale(0.8);
+      animation: floatUpDown 6s ease-in-out infinite alternate;
+    }
+    .hero-screen {
+      width: 130px;
+      height: 80px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1c2340, #101325);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      position: relative;
+    }
+    .hero-screen::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(
+          135deg,
+          rgba(255, 75, 155, 0.4),
+          transparent
+        ),
+        radial-gradient(circle at top, rgba(88, 213, 255, 0.4), transparent);
+      mix-blend-mode: screen;
+      opacity: 0.9;
+    }
+
+    /* ---------- Section base ---------- */
+    section {
+      padding: 3rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at top,
+        rgba(255, 111, 181, 0.08),
+        transparent 55%
+      );
+      opacity: 0.75;
+      pointer-events: none;
+    }
+    section:nth-of-type(even)::before {
+      background: radial-gradient(
+        circle at bottom,
+        rgba(88, 213, 255, 0.09),
+        transparent 55%
+      );
+    }
+    .section-header {
+      margin-bottom: 1.8rem;
+      text-align: left;
+    }
+    .section-kicker {
+      font-size: 0.85rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #a4b1ff;
+      margin-bottom: 0.4rem;
+    }
+    .section-title {
+      font-size: 1.6rem;
+      text-transform: uppercase;
+    }
+
+    /* ---------- Reels grid ---------- */
+    .reel-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.3rem;
+    }
+    .reel-card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #101325, #1a2140);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      cursor: pointer;
+      transition: transform 0.25s ease-out, box-shadow 0.25s ease-out,
+        border-color 0.25s ease-out;
+    }
+    .reel-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      opacity: 0.9;
+      transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+    }
+    .reel-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at 20% 20%,
+        rgba(255, 111, 181, 0.2),
+        transparent 55%
+      );
+      opacity: 0;
+      transition: opacity 0.25s ease-out;
+    }
+    .reel-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .reel-card:hover::before { opacity: 1; }
+    .reel-card:hover img {
+      opacity: 1;
+      transform: scale(1.03);
+    }
+
+    .reel-label {
+      position: absolute;
+      left: 0.9rem;
+      bottom: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(3, 7, 18, 0.7);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .reel-label span {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
+      animation: pulse 1.5s ease-out infinite;
+    }
+    .play-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .play-icon-circle {
+      width: 58px;
+      height: 58px;
+      border-radius: 999px;
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(
+        circle,
+        rgba(0, 0, 0, 0.4),
+        transparent 55%
+      );
+      backdrop-filter: blur(4px);
+      animation: subtlePulse 2.4s ease-out infinite;
+    }
+    .play-icon-circle::before {
+      content: "";
+      margin-left: 3px;
+      border-style: solid;
+      border-width: 8px 0 8px 13px;
+      border-color: transparent transparent transparent #ffffff;
+    }
+    .reel-caption {
+      padding: 0.75rem 0.9rem 0.9rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #cfd4ff;
+    }
+
+    /* ---------- Thumbnails ---------- */
+    .thumb-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.3rem;
+    }
+    .thumb-card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      cursor: pointer;
+      transition: transform 0.25s ease-out, box-shadow 0.25s ease-out,
+        border-color 0.25s ease-out;
+    }
+   .thumb-card img {
+  width: 100%;         /* or remove this too if you want 1:1 pixel size */
+  height: auto;        /* keep natural aspect ratio */
+  display: block;
+  transition: transform 0.22s ease-out;
+  }
+    .thumb-card:hover {
+      transform: translateY(-6px) rotate(-0.3deg);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .thumb-card:hover img { transform: scale(1.04); }
+    .thumb-tag {
+      position: absolute;
+      left: 0.75rem;
+      bottom: 0.7rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(3, 7, 18, 0.72);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    /* ---------- CTA ---------- */
+    .cta {
+      text-align: center;
+      padding-bottom: 3rem;
+    }
+    .cta h2 {
+      font-size: 1.7rem;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .cta p {
+      color: #d7ddff;
+      font-size: 0.98rem;
+      margin-bottom: 1.7rem;
+    }
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+    }
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 0.9rem;
+      font-size: 1.1rem;
+      color: #d4d9ff;
+    }
+    .social-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(6, 10, 36, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out,
+        border-color 0.2s ease-out;
+    }
+    .social-icon:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 18px rgba(88, 213, 255, 0.8);
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 1.4rem 0 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #a3a7d3;
+      background: radial-gradient(
+        circle at top,
+        rgba(0, 0, 0, 0.6),
+        transparent 60%
+      );
+    }
+
+    /* ---------- Modal ---------- */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .modal.open { display: flex; }
+    .modal-content {
+      position: relative;
+      width: min(90%, 800px);
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+    }
+    .modal iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .modal-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    /* ---------- Animations ---------- */
+    @keyframes floatGlow {
+      from { transform: translate3d(-10px, 0, 0); }
+      to { transform: translate3d(10px, -10px, 0); }
+    }
+    @keyframes slowZoom {
+      from { transform: scale(1.02); }
+      to { transform: scale(1.08); }
+    }
+    @keyframes floatUpDown {
+      from { transform: translateY(10px) scale(0.8); }
+      to { transform: translateY(-6px) scale(0.8); }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+    @keyframes subtlePulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.35);
+      }
+      100% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 12px rgba(255, 255, 255, 0);
+      }
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding-top: 2.4rem; }
+      .hero-visual { order: -1; }
+      .hero-meta { gap: 1.5rem; }
+      .reel-grid, .thumb-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hero { gap: 1.9rem; }
+      .hero-visual { padding: 0.8rem; }
+      .reel-grid, .thumb-grid { grid-template-columns: 1fr; }
+      .hero-meta { flex-direction: column; gap: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="logo">Anubhav <span>Singh</span></div>
+      <nav class="nav-links">
+        <a data-scroll="#home" class="active">Home</a>
+        <a data-scroll="#reels">Portfolio</a>
+        <a data-scroll="#thumbnails">Thumbnails</a>
+        <a data-scroll="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main id="home">
+    <section class="hero" id="home">
+  <div class="container hero-inner">
+    <div class="hero-copy hero-centered">
+      <h2>Video Editor & Thumbnail Designer</h2>
+      <h1>Creating visuals that captivate & engage</h1>
+      <p>
+        High-impact reels and thumbnails crafted to boost watch time, click‑through
+        rate, and brand presence across YouTube, Instagram, and short‑form platforms.
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn" data-scroll="#reels">Watch My Reel</button>
+        <button class="btn btn-outline" data-scroll="#contact">
+          Book a Free Call
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <!-- Video editing reel showcase -->
+    <section id="reels">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-kicker">Video editing reel showcase</p>
+          <h3 class="section-title">Highlight your next story</h3>
+        </div>
+        <div class="reel-grid">
+          <!-- Reel 1 -->
+          <article class="reel-card" data-video="https://www.youtube.com/embed/twZFXCuIx0A">
+            <img
+              src="https://img.youtube.com/vi/twZFXCuIx0A/maxresdefault.jpg"
+              alt="Gaming reel"
+            />
+            <div class="play-icon">
+              <div class="play-icon-circle"></div>
+            </div>
+            <div class="reel-label">
+              <span></span> Reel 1
+            </div>
+            <div class="reel-caption">High‑energy gaming edit.</div>
+          </article>
+
+          <!-- Reel 2 -->
+          <article class="reel-card" data-video="https://www.youtube.com/embed/wmPtZR2K-yc">
+            <img
+              src="https://img.youtube.com/vi/wmPtZR2K-yc/maxresdefault.jpg"
+              alt="Action reel"
+            />
+            <div class="play-icon">
+              <div class="play-icon-circle"></div>
+            </div>
+            <div class="reel-label">
+              <span></span> Reel 2
+            </div>
+            <div class="reel-caption">Dynamic, cinematic transitions.</div>
+          </article>
+
+          <!-- Reel 3 -->
+          <article class="reel-card" data-video="https://www.youtube.com/embed/WDlk3jpHEPQ">
+            <img
+              src="https://img.youtube.com/vi/WDlk3jpHEPQ/maxresdefault.jpg"
+              alt="Travel reel"
+            />
+            <div class="play-icon">
+              <div class="play-icon-circle"></div>
+            </div>
+            <div class="reel-label">
+              <span></span> Reel 3
+            </div>
+            <div class="reel-caption">Clean, modern storytelling.</div>
+          </article>
+
+          <!-- Reel 4 -->
+          <article class="reel-card" data-video="https://www.youtube.com/embed/1dMtvzJFiGg">
+            <img
+              src="https://img.youtube.com/vi/1dMtvzJFiGg/maxresdefault.jpg"
+              alt="Reel 4"
+            />
+            <div class="play-icon">
+              <div class="play-icon-circle"></div>
+            </div>
+            <div class="reel-label">
+              <span></span> Reel 4
+            </div>
+            <div class="reel-caption">Engaging, fast‑paced short.</div>
+          </article>
+
+          <!-- Reel 5 -->
+          <article class="reel-card" data-video="https://www.youtube.com/embed/pdlG4bJTVlE">
+            <img
+              src="https://img.youtube.com/vi/pdlG4bJTVlE/maxresdefault.jpg"
+              alt="Reel 5"
+            />
+            <div class="play-icon">
+              <div class="play-icon-circle"></div>
+            </div>
+            <div class="reel-label">
+              <span></span> Reel 5
+            </div>
+            <div class="reel-caption">Conversion‑focused promo edit.</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Thumbnail design gallery -->
+    <section id="thumbnails">
+      <div class="container">
+        <div class="section-header">
+          <p class="section-kicker">Thumbnail design gallery</p>
+          <h3 class="section-title">Thumbnails that demand clicks</h3>
+        </div>
+        <div class="thumb-grid">
+          <!-- Your first thumbnail -->
+          <article class="thumb-card">
+            <img
+              src="photo_6091508874642311678_w.jpg"
+              alt="Social platforms thumbnail"
+            />
+            <div class="thumb-tag">$10,000 / month</div>
+          </article>
+
+          <!-- Your second thumbnail -->
+          <article class="thumb-card">
+            <img
+              src="hitler_thumbnail.png"
+              alt="History documentary thumbnail"
+            />
+            <div class="thumb-tag">Biography</div>
+          </article>
+
+          <!-- Your third thumbnail -->
+          <article class="thumb-card">
+            <img
+              src="photo_6091508874642311694_w.jpg"
+              alt="Growth graph thumbnail"
+            />
+            <div class="thumb-tag">Growth story</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact / CTA -->
+    <section id="contact">
+      <div class="container cta">
+        <h2>Let’s work together</h2>
+        <p>
+          Ready to upgrade your content with scroll‑stopping visuals? Share your
+          project details and receive a tailored concept within 24 hours.
+        </p>
+        <div class="cta-actions">
+          <button class="btn" onclick="window.location.href='mailto:uboy80804@gmail.com'">
+            Contact Me
+          </button>
+          <button class="btn btn-outline" data-scroll="#reels">
+            View Full Portfolio
+          </button>
+        </div>
+        <div class="socials">
+          <a class="social-icon" href="https://youtube.com" target="_blank" rel="noopener">▶</a>
+          <a class="social-icon" href="https://instagram.com" target="_blank" rel="noopener">🖼</a>
+          <a class="social-icon" href="mailto:youremail@example.com">✉</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal video player -->
+  <div class="modal" id="videoModal">
+    <div class="modal-content">
+      <iframe id="videoFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <button class="modal-close" id="modalClose">Close ✕</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © 2026 Anubhav Singh. All rights reserved.
+  </footer>
+
+  <script>
+    // Smooth scroll for nav links and buttons
+    document.querySelectorAll("[data-scroll]").forEach(el => {
+      el.addEventListener("click", () => {
+        const target = document.querySelector(el.getAttribute("data-scroll"));
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+
+    // Modal video logic
+    const modal = document.getElementById("videoModal");
+    const frame = document.getElementById("videoFrame");
+    const closeBtn = document.getElementById("modalClose");
+
+    document.querySelectorAll(".reel-card").forEach(card => {
+      card.addEventListener("click", () => {
+        const url = card.getAttribute("data-video");
+        if (!url) return;
+        // autoplay=1 for auto play
+        frame.src = url + (url.includes("?") ? "&" : "?") + "autoplay=1";
+        modal.classList.add("open");
+      });
+    });
+
+    function closeModal() {
+      modal.classList.remove("open");
+      frame.src = "";
+    }
+
+    closeBtn.addEventListener("click", closeModal);
+    modal.addEventListener("click", e => {
+      if (e.target === modal) closeModal();
+    });
+
+    // Optional: ESC key to close
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && modal.classList.contains("open")) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
